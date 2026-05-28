@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { CLIENT_URL } from './config/env.js';
+import userRoutes from './routes/user.routes.js';
 
 const app = express();
 
@@ -12,7 +13,7 @@ app.use(cors({ origin: CLIENT_URL, credentials: true }));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use('/api/users', userRoutes);
 // Health check
 app.get('/health', (req, res) => {
     res.json({ status: 'OK', message: 'SportsXO API is running' });
