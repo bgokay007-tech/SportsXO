@@ -18,8 +18,8 @@ app.get('/health', (req, res) => {
     res.json({ status: 'OK', message: 'SportsXO API is running' });
 });
 
-// Routes (sonra eklenecek)
-// app.use('/api/auth', authRoutes);
+import authRoutes from './routes/auth.routes.js';
+app.use('/api/auth', authRoutes);
 // app.use('/api/users', userRoutes);
 
 // 404 handler
