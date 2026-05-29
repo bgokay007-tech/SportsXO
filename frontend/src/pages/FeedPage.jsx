@@ -46,7 +46,7 @@ function FeedPage() {
         try {
             dispatch(togglePostLike(postId));
             await api.post(`/posts/${postId}/like`);
-        } catch (err) {
+        } catch {
             dispatch(togglePostLike(postId));
         }
     };
