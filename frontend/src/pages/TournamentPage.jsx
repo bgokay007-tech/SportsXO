@@ -39,7 +39,6 @@ function TournamentCard({ tournament, onJoin }) {
                 <span>📅 {new Date(tournament.startDate).toLocaleDateString()}</span>
             </div>
 
-            {/* Progress bar */}
             <div className="w-full bg-gray-700 rounded-full h-2 mb-4">
                 <div
                     className="bg-gradient-to-r from-purple-600 to-pink-500 h-2 rounded-full transition-all"
@@ -74,25 +73,26 @@ function TournamentPage() {
     });
 
     useEffect(() => {
-        fetchTournaments();
-    }, []);
+        let ignore = false;
 
-    const fetchTournaments = async () => {
-        try {
-            const { data } = await api.get('/tournaments');
-            setTournaments(data);
-        } catch (err) {
+        api.get('/tournaments').then(({ data }) => {
+            if (!ignore) {
+                setTournaments(data);
+                setIsLoading(false);
+            }
+        }).catch((err) => {
             console.error(err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+            if (!ignore) setIsLoading(false);
+        });
+
+        return () => { ignore = true; };
+    }, []);
 
     const handleCreate = async (e) => {
         e.preventDefault();
         try {
             const { data } = await api.post('/tournaments', formData);
-            setTournaments([data, ...tournaments]);
+            setTournaments(prev => [data, ...prev]);
             setShowCreate(false);
             setFormData({ name: '', sport: 'football', description: '', maxPlayers: 16, startDate: '' });
         } catch (err) {
@@ -104,7 +104,8 @@ function TournamentPage() {
         try {
             await api.post(`/tournaments/${tournamentId}/join`);
             alert('Joined tournament! 🎉');
-            fetchTournaments();
+            const { data } = await api.get('/tournaments');
+            setTournaments(data);
         } catch (err) {
             alert(err.response?.data?.message || 'Error joining tournament');
         }
@@ -116,7 +117,6 @@ function TournamentPage() {
 
     return (
         <div className="min-h-screen bg-gray-950">
-            {/* Navbar */}
             <nav className="bg-gray-900 border-b border-gray-800 px-4 py-3 sticky top-0 z-10">
                 <div className="max-w-4xl mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-4">
@@ -139,7 +139,6 @@ function TournamentPage() {
             <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
                 <h2 className="text-3xl font-bold text-white">🏆 Tournaments</h2>
 
-                {/* Create Form */}
                 {showCreate && (
                     <div className="bg-gray-900 rounded-2xl p-6 border border-purple-500/50">
                         <h3 className="text-white font-bold text-xl mb-4">Create Tournament</h3>
@@ -207,7 +206,6 @@ function TournamentPage() {
                     </div>
                 )}
 
-                {/* Filters */}
                 <div className="flex gap-2">
                     {['ALL', 'UPCOMING', 'ONGOING', 'FINISHED'].map(f => (
                         <button
@@ -223,7 +221,6 @@ function TournamentPage() {
                     ))}
                 </div>
 
-                {/* Tournament List */}
                 {isLoading ? (
                     <p className="text-gray-400 text-center py-8">Loading tournaments...</p>
                 ) : filtered.length === 0 ? (
