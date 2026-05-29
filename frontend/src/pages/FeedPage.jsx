@@ -58,31 +58,32 @@ function FeedPage() {
 
     return (
         <div className="min-h-screen bg-gray-950">
-            <div className="flex items-center gap-4">
-                <button
-                    onClick={() => navigate('/tournaments')}
-                    className="text-gray-400 hover:text-white text-sm transition"
-                >
-                    🏆 Tournaments
-                </button>
-                <button
-                    onClick={handleLogout}
-                    className="text-gray-400 hover:text-white text-sm transition"
-                >
-                    Logout
-                </button>
-            </div>
+            {/* Navbar */}
             <nav className="bg-gray-900 border-b border-gray-800 px-4 py-3 sticky top-0 z-10">
                 <div className="max-w-2xl mx-auto flex items-center justify-between">
                     <h1 className="text-2xl font-bold text-white">
                         Sports<span className="text-purple-500">XO</span>
                     </h1>
-                    <button
-                        onClick={handleLogout}
-                        className="text-gray-400 hover:text-white text-sm transition"
-                    >
-                        Logout
-                    </button>
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={() => navigate('/find-players')}
+                            className="text-gray-400 hover:text-white text-sm transition"
+                        >
+                            🔍 Find Players
+                        </button>
+                        <button
+                            onClick={() => navigate('/tournaments')}
+                            className="text-gray-400 hover:text-white text-sm transition"
+                        >
+                            🏆 Tournaments
+                        </button>
+                        <button
+                            onClick={handleLogout}
+                            className="text-gray-400 hover:text-white text-sm transition"
+                        >
+                            Logout
+                        </button>
+                    </div>
                 </div>
             </nav>
 
@@ -120,13 +121,20 @@ function FeedPage() {
                     posts.map(post => (
                         <div key={post.id} className="bg-gray-900 rounded-2xl p-4 border border-gray-800">
                             {/* User info */}
-                            <div className="flex items-center gap-3 mb-3">
+                            <div
+                                className="flex items-center gap-3 mb-3 cursor-pointer"
+                                onClick={() => navigate(`/profile/${post.user?.username}`)}
+                            >
                                 <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold">
                                     {post.user?.username?.[0]?.toUpperCase()}
                                 </div>
                                 <div>
-                                    <p className="text-white font-semibold">{post.user?.fullName}</p>
-                                    <p className="text-gray-400 text-sm">@{post.user?.username} · {post.user?.profile?.sport}</p>
+                                    <p className="text-white font-semibold hover:text-purple-400 transition">
+                                        {post.user?.fullName}
+                                    </p>
+                                    <p className="text-gray-400 text-sm">
+                                        @{post.user?.username} · {post.user?.profile?.sport}
+                                    </p>
                                 </div>
                             </div>
 
