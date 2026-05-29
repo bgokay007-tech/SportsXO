@@ -4,6 +4,8 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import FeedPage from './pages/FeedPage';
 import ProfilePage from './pages/ProfilePage';
+import TournamentPage from './pages/TournamentPage';
+
 
 function App() {
   const token = useSelector(state => state.auth.token);
@@ -15,6 +17,7 @@ function App() {
       <Route path="/feed" element={token ? <FeedPage /> : <Navigate to="/login" />} />
       <Route path="/profile/:username" element={token ? <ProfilePage /> : <Navigate to="/login" />} />
       <Route path="*" element={<Navigate to={token ? "/feed" : "/login"} />} />
+      <Route path="/tournaments" element={token ? <TournamentPage /> : <Navigate to="/login" />} />
     </Routes>
   );
 }
