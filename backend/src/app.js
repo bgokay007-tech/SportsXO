@@ -6,6 +6,7 @@ import { CLIENT_URL } from './config/env.js';
 import userRoutes from './routes/user.routes.js';
 import postRoutes from './routes/post.routes.js';
 import tournamentRoutes from './routes/tournament.routes.js';
+import matchRoutes from './routes/match.routes.js';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/tournaments', tournamentRoutes);
+app.use('/api/matches', matchRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
