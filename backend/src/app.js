@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import { CLIENT_URL } from './config/env.js';
 import userRoutes from './routes/user.routes.js';
 import postRoutes from './routes/post.routes.js';
+import tournamentRoutes from './routes/tournament.routes.js';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
+app.use('/api/tournaments', tournamentRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
